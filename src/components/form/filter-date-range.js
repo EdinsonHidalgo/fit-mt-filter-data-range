@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import InputComponent from './input-component';
 import ButtonComponent from './button-component';
 
 const FilterDateRange = () => {
-    const today = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    const today = now.getFullYear() + "-" + ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1)) +
+        "-" + (now.getDate() < 10 ? '0' + now.getDate() : now.getDate());
+
     const text = {
         defaultSD: 'Fecha en la que comienza el filtro',
         inValidSD: 'La fecha de inicio NO puede ser posterior a la fecha final',
@@ -19,48 +22,75 @@ const FilterDateRange = () => {
 
     const toSubmit = (e) => {
         e.preventDefault();
-        // console.log("startDate: " + startDate.value);
-        // console.log("endDate: " + endDate.value);
-        // console.log(today);
-    }
-
-    const toValStartDate = (inputValue) => {
-        console.log("startDate: " + inputValue + "   endDate: " + endDate.value);
-        let v = true;
-        setTextSmallSD(text.defaultSD);
-
-        if (endDate.value !== '') {
-            if (inputValue > endDate.value) {
-                console.log("Entro en if de toVal");
-                v = false;
-                setTextSmallSD(text.inValidSD);
-            }
-            else {
-                setEndDate({...endDate, valid: true });
-                setTextSmallED(text.defaultED);
-            }
+        if(startDate.valid && endDate.valid) {
+            //TODO enviar datos a API
+            setStartDate({ value: '', valid: null });
+            setEndDate({ value: '', valid: null });
+            setTextSmallSD(text.defaultSD);
+            setTextSmallED(text.defaultED);
         }
-        return v;
+        //"else" with a state to form, to indicate corrections are still missing
     }
 
-    const toValEndDate = (inputValue) => {
-        console.log("startDate: " + inputValue + "   endDate: " + endDate.value);
-        let v = true;
-        setTextSmallED(text.defaultED);
+    const toValStartDate = () => {
+        let v = null;
 
         if (startDate.value !== '') {
-            if (inputValue < startDate.value) {
-                console.log("Entro en if de toVal");
-                v = false;
-                setTextSmallED(text.inValidED);
+            if (endDate.value !== '') {
+                if (startDate.value > endDate.value) {
+                    v = false;
+                }
+                else {
+                    v = true;
+                    setEndDate({ ...endDate, valid: true });
+                }
             }
-            else {
-                setStartDate({...startDate, valid: true });
-                setTextSmallSD(text.defaultSD);
+            else { v = true; }
+        }
+        else {
+            if (endDate.value !== '') {
+                setEndDate({ ...endDate, valid: true });
             }
         }
-        return v;
+        setStartDate({ ...startDate, valid: v });
     }
+
+    const toValEndDate = () => {
+        let v = null;
+
+        if (endDate.value !== '') {
+            if (startDate.value !== '') {
+                if (endDate.value < startDate.value) {
+                    v = false;
+                }
+                else {
+                    v = true;
+                    setStartDate({ ...startDate, valid: true });
+                }
+            }
+            else { v = true; }
+        }
+        else {
+            if (startDate.value !== '') {
+                setStartDate({ ...startDate, valid: true });
+            }
+        }
+        setEndDate({ ...endDate, valid: v });
+    }
+
+    useEffect(() => {
+        switch (startDate.valid) {
+            case false: setTextSmallSD(text.inValidSD); break;
+            default: setTextSmallSD(text.defaultSD); break;
+        }
+    }, [startDate.valid, text.inValidSD, text.defaultSD]);
+
+    useEffect(() => {
+        switch (endDate.valid) {
+            case false: setTextSmallED(text.inValidED); break;
+            default: setTextSmallED(text.defaultED); break;
+        }
+    }, [endDate.valid, text.inValidED, text.defaultED]);
 
     return (
         <div className='card container shadow-sm'>

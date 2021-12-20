@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
-const InputComponent = (props) => {
+const InputComponent = ({ value, changeValue, valid, toValidate, divCN, labelCN, labelText, inputID, inputType, required, maxDate, smallID, smallText}) => {
     const inputClassName = {
         form: "form-control",
         formValid: "form-control is-valid",
@@ -15,24 +15,24 @@ const InputComponent = (props) => {
 
     const onChange = (e) => {
         let inputValue = e.target.value;
-        let v = null;
-
-        if (inputValue !== '') {
-            console.log("Entro al if de onChange");
-            v = props.toValidate(inputValue);
-        }
-        console.log("valid: " + v);
-        props.changeValue({ value: inputValue, valid: v });
+        changeValue((prevState ) => {
+            return {...prevState, value: inputValue }
+        });
     }
 
+    useEffect(() => { 
+        toValidate(); 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+
     return (
-        <div className={props.divCN}>
-            <label className={props.labelCN} htmlFor={props.inputID}><b>{props.labelText}</b></label>
-            <input type={props.inputType} id={props.inputID} aria-describedby={props.smallID}
-                className={props.valid === null ? inputClassName.form : props.valid ? inputClassName.formValid : inputClassName.formInvalid}
-                required={props.required} value={props.value} onChange={onChange} max={props.maxDate} />
-            <small className={props.valid === null ? smallClassName.form : props.valid ? smallClassName.formValid : smallClassName.formInvalid}
-                id={props.smallID}> {props.smallText} </small>
+        <div className={divCN}>
+            <label className={labelCN} htmlFor={inputID}><b>{labelText}</b></label>
+            <input type={inputType} id={inputID} aria-describedby={smallID}
+                className={valid === null ? inputClassName.form : valid ? inputClassName.formValid : inputClassName.formInvalid}
+                required={required} value={value} onChange={onChange} max={maxDate} />
+            <small className={valid === null ? smallClassName.form : valid ? smallClassName.formValid : smallClassName.formInvalid}
+                id={smallID}> {smallText} </small>
         </div>
     )
 }
