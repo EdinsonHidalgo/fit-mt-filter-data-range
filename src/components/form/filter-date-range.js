@@ -23,13 +23,17 @@ const FilterDateRange = () => {
     const toSubmit = (e) => {
         e.preventDefault();
         if(startDate.valid && endDate.valid) {
+            alert("Datos que se enviaran a la API (Rango de fechas para el filtro de datos): " + 
+                "\n1.- " + startDate.value + " (Fecha de inicio)\n2.- " + endDate.value + " (Fecha final)");
             //TODO enviar datos a API
             setStartDate({ value: '', valid: null });
             setEndDate({ value: '', valid: null });
             setTextSmallSD(text.defaultSD);
             setTextSmallED(text.defaultED);
         }
-        //"else" with a state to form, to indicate corrections are still missing
+        else {
+            alert("Es necesario que corrijas todos los errores de los campos, antes de realizar el envio de datos.");
+        }
     }
 
     const toValStartDate = () => {
