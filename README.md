@@ -1,6 +1,6 @@
 # FIT-MT-Filter-Data-Range
 
-Prototype...
+Prototype to filter data, from a date range...
 
 # Getting Started with Create React App
 
