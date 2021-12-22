@@ -25,7 +25,7 @@ const FilterDateRange = () => {
         if(startDate.valid && endDate.valid) {
             alert("Datos que se enviaran a la API (Rango de fechas para el filtro de datos): " + 
                 "\n1.- " + startDate.value + " (Fecha de inicio)\n2.- " + endDate.value + " (Fecha final)");
-            //TODO enviar datos a API
+            //TODO enviar datos a API ("Instalar axios para la coneccion")
             setStartDate({ value: '', valid: null });
             setEndDate({ value: '', valid: null });
             setTextSmallSD(text.defaultSD);
