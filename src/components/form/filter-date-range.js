@@ -5,8 +5,10 @@ import ButtonComponent from './button-component';
 
 const FilterDateRange = () => {
     const now = new Date();
-    const today = now.getFullYear() + "-" + ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1)) +
-        "-" + (now.getDate() < 10 ? '0' + now.getDate() : now.getDate());
+    const today = now.getFullYear() + "-" + ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1));
+    // YYYY-MM-DD
+    // const today = now.getFullYear() + "-" + ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1)) +
+    //     "-" + (now.getDate() < 10 ? '0' + now.getDate() : now.getDate());
 
     const text = {
         defaultSD: 'Fecha en la que comienza el filtro',
@@ -102,12 +104,12 @@ const FilterDateRange = () => {
             <form className='row align-items-center justify-content-center m-3' onSubmit={toSubmit}>
                 <div className='form-group col-lg row'>
                     <InputComponent divCN="form-group col-md mb-2" labelCN="form-label" labelText="Fecha de inicio" inputID="start-date"
-                        inputType="date" required={true} value={startDate.value} changeValue={setStartDate} smallID="desc-start-date"
+                        inputType="month" required={true} value={startDate.value} changeValue={setStartDate} smallID="desc-start-date"
                         smallText={textSmallSD} maxDate={today} toValidate={toValStartDate} valid={startDate.valid}>
                     </InputComponent>
 
                     <InputComponent divCN="form-group col-md mb-2" labelCN="form-label" labelText="Fecha final" inputID="end-date"
-                        inputType="date" required={true} value={endDate.value} changeValue={setEndDate} smallID="desc-end-date"
+                        inputType="month" required={true} value={endDate.value} changeValue={setEndDate} smallID="desc-end-date"
                         smallText={textSmallED} maxDate={today} toValidate={toValEndDate} valid={endDate.valid}>
                     </InputComponent>
                 </div>
