@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import InputComponent from './input-component';
-import ButtonComponent from './button-component';
 import Service from '../../services';
 import Utilities from '../../utilities';
+import DataDownload from './data-download';
 
 const objService = new Service();
 const objUtilities = new Utilities();
 
-const DataFilter = ({toStartDate, toEndDate}) => {
+const DataFilter = () => {
     const now = new Date();
     const year = now.getFullYear();
     const month = ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1));
@@ -29,20 +29,6 @@ const DataFilter = ({toStartDate, toEndDate}) => {
             objUtilities.loadControl('hidden', '0');
             objUtilities.toError(error);
         });
-    }
-
-    const toSubmit = (e) => {
-        e.preventDefault();
-        if (dateYM.valid) {
-            let cStartDate = DateRefFirstSecond(startDate);
-            let cEndDate = DateRefLastSecond(endDate);
-            toStartDate(cStartDate);
-            toEndDate(cEndDate);
-            filter(cStartDate, cEndDate);
-        }
-        else {
-            alert("Es necesario corrijas todos los datos de los campos, antes de realizar el envio de datos.");
-        }
     }
 
     const DateRefLastSecond = (date) => {
@@ -104,20 +90,27 @@ const DataFilter = ({toStartDate, toEndDate}) => {
         }
     }, [dateYM.valid, startDate, endDate, text.defaultYM]);
 
+    useEffect(() => {
+        if (dateYM.valid && startDate !== '' && endDate !== '') {
+            let cStartDate = DateRefFirstSecond(startDate);
+            let cEndDate = DateRefLastSecond(endDate);
+            filter(cStartDate, cEndDate);
+        }
+    }, [dateYM.valid, startDate, endDate]);
+
     return (
-        <div className='d-flex justify-content-center'>
-            <div className='card shadow-sm width-card-to-one-element'>
-                <form className='m-4' onSubmit={toSubmit}>
-                    <div className='form-group'>
-                        <InputComponent divCN="form-group mb-3" labelCN="form-label" labelText="Mes/Año" inputID="start-date"
-                            inputType="month" required={true} value={dateYM.value} changeValue={setDateYM} smallID="desc-start-date"
-                            smallText={textSmallYM} maxDate={YM} valid={dateYM.valid}>
+        <div className='container'>
+            <div className='card shadow-sm'>
+                <form className='m-3 row d-flex justify-content-center'>
+                    <div className='form-group col'>
+                        <InputComponent divCN="d-flex flex-column justify-content-start max-width-input" 
+                            labelCN="form-label" labelText="Mes/Año" inputID="start-date" inputType="month" required={true} 
+                            value={dateYM.value} changeValue={setDateYM} smallID="desc-start-date" smallText={textSmallYM} 
+                            maxDate={YM} valid={dateYM.valid}>
                         </InputComponent>
                     </div>
 
-                    <ButtonComponent divCN="form-group d-flex justify-content-center" btnCN="btn btn-primary px-4" type="submit"
-                        btnText="Filtrar Datos">
-                    </ButtonComponent>
+                    <DataDownload start_date={startDate} end_date={endDate}></DataDownload>
                 </form>
             </div>
         </div>

@@ -18,20 +18,16 @@ const DataDownload = ({ start_date, end_date }) => {
         });
     }
 
-    const onClick = () => {
-        if (start_date !== '') { downloadData(); }
+    const onClick = (e) => {
+        if (start_date !== '' && end_date !== '') { downloadData(); }
         else { alert("Es necesario que selecciones un Mes/Año, antes de realizar la descarga de datos."); }
     }
 
     return (
-        <div className='d-flex justify-content-center'>
-            <div className='card shadow-sm width-card-to-one-element'>
-                <div className='m-4'>
-                    <ButtonComponent divCN="form-group d-flex justify-content-center" btnCN="btn btn-danger px-4" type="submit"
-                        btnText="Descargar" toClick={onClick}>
-                    </ButtonComponent>
-                </div>
-            </div>
+        <div className='col-auto form-group d-flex align-items-center'>
+            <ButtonComponent divCN="mt-2" btnCN="btn btn-danger px-4" type="button" btnText="Descargar" 
+                toClick={onClick}>
+            </ButtonComponent>
         </div>
     )
 }
