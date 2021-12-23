@@ -5,3 +5,7 @@ body {
 .border-black-solid {
   border: 1px solid black;
 }
+
+.width-card-to-one-element {
+  width: 300px;
+}

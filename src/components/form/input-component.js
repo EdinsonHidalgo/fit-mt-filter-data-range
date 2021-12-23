@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 const InputComponent = ({ value, changeValue, valid, toValidate, divCN, labelCN, labelText, inputID, inputType, required, maxDate, smallID, smallText}) => {
     const inputClassName = {
@@ -20,10 +20,10 @@ const InputComponent = ({ value, changeValue, valid, toValidate, divCN, labelCN,
         });
     }
 
-    useEffect(() => { 
-        toValidate(); 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
+    // useEffect(() => { 
+    //     toValidate(); 
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [value]);
 
     return (
         <div className={divCN}>
