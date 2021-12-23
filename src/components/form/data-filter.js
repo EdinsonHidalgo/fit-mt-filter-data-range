@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import InputComponent from './input-component';
 import Service from '../../services';
 import Utilities from '../../utilities';
-import DataDownload from './data-download';
+import ButtonComponent from '../form/button-component'
 
 const objService = new Service();
 const objUtilities = new Utilities();
@@ -98,19 +98,38 @@ const DataFilter = () => {
         }
     }, [dateYM.valid, startDate, endDate]);
 
+    const downloadData = () => {
+        objUtilities.loadControl('visible', '100%');
+        objService.get_download_data(startDate, endDate).then((response) => {
+            objUtilities.loadControl('hidden', '0');
+            console.log(response);
+        }).catch(function (error) {
+            objUtilities.loadControl('hidden', '0');
+            objUtilities.toError(error);
+        });
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        if (startDate !== '' && endDate !== '') { downloadData(); }
+        //else { alert("Es necesario que selecciones un Mes/Año, antes de realizar la descarga de datos."); }
+    }
+
     return (
         <div className='container'>
             <div className='card shadow-sm'>
-                <form className='m-3 row d-flex justify-content-center'>
+                <form className='m-3 row d-flex justify-content-center' onSubmit={onSubmit}>
                     <div className='form-group col'>
-                        <InputComponent divCN="d-flex flex-column justify-content-start max-width-input" 
-                            labelCN="form-label" labelText="Mes/Año" inputID="start-date" inputType="month" required={true} 
-                            value={dateYM.value} changeValue={setDateYM} smallID="desc-start-date" smallText={textSmallYM} 
+                        <InputComponent divCN="d-flex flex-column justify-content-start max-width-input"
+                            labelCN="form-label" labelText="Mes/Año" inputID="start-date" inputType="month" required={true}
+                            value={dateYM.value} changeValue={setDateYM} smallID="desc-start-date" smallText={textSmallYM}
                             maxDate={YM} valid={dateYM.valid}>
                         </InputComponent>
                     </div>
 
-                    <DataDownload start_date={startDate} end_date={endDate}></DataDownload>
+                    <div className='col-auto form-group d-flex align-items-center'>
+                        <ButtonComponent divCN="mt-2" btnCN="btn btn-danger px-4" type="submit" btnText="Descargar"></ButtonComponent>
+                    </div>
                 </form>
             </div>
         </div>
