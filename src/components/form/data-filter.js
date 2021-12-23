@@ -46,6 +46,8 @@ const DataFilter = () => {
     useEffect(() => {
         const toValidDate = () => {
             let v = null;
+            setStartDate('');
+            setEndDate('');
             if (dateYM.value !== '') {
                 v = true;
                 setStartDate(dateYM.value + "-01");
@@ -127,7 +129,7 @@ const DataFilter = () => {
                         </InputComponent>
                     </div>
 
-                    <div className='col-auto form-group d-flex align-items-center'>
+                    <div className='form-group col-auto d-flex align-items-center'>
                         <ButtonComponent divCN="mt-2" btnCN="btn btn-danger px-4" type="submit" btnText="Descargar"></ButtonComponent>
                     </div>
                 </form>
