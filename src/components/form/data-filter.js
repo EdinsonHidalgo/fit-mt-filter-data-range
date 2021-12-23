@@ -25,11 +25,21 @@ const DataFilter = () => {
         setTextSmallYM(text.defaultYM);
     }
 
+    const loadControl = (v, o) => {
+        var contenedor = document.getElementById('load-container');
+        console.log(contenedor);
+        contenedor.style.visibility = v;
+        contenedor.style.opacity = o;
+    }
+
     const filter = (start_date, end_date) => {
+        loadControl('visible', '100%');
         objService.get_filtered_data(start_date, end_date).then((response) => {
+            loadControl('hidden', '0');
             console.log(response);
             resetStates();
         }).catch(function (error) {
+            loadControl('hidden', '0');
             if (error.response) {
                 // Request made and server responded
                 console.log("Data: " + error.response.data);
@@ -118,6 +128,9 @@ const DataFilter = () => {
 
     return (
         <div className='d-flex justify-content-center'>
+            <div id='load-container'>
+                <div id='load'></div>
+            </div>
             <div className='card shadow-sm width-card-to-one-element'>
                 <form className='m-4' onSubmit={toSubmit}>
                     <div className='form-group'>
