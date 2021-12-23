@@ -123,7 +123,7 @@ const DataFilter = () => {
             <div className='card shadow-sm'>
                 <form className='m-3 row d-flex justify-content-center' onSubmit={onSubmit}>
                     <div className='form-group col'>
-                        <InputComponent divCN="d-flex flex-column justify-content-start max-width-input"
+                        <InputComponent divCN="max-width-input"
                             labelCN="form-label" labelText="Mes/Año" inputID="start-date" inputType="month" required={true}
                             value={dateYM.value} changeValue={setDateYM} smallID="desc-start-date" smallText={textSmallYM}
                             maxDate={YM} valid={dateYM.valid}>
