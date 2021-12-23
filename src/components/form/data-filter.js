@@ -128,9 +128,6 @@ const DataFilter = () => {
 
     return (
         <div className='d-flex justify-content-center'>
-            <div id='load-container'>
-                <div id='load'></div>
-            </div>
             <div className='card shadow-sm width-card-to-one-element'>
                 <form className='m-4' onSubmit={toSubmit}>
                     <div className='form-group'>
