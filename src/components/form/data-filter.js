@@ -2,34 +2,55 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import InputComponent from './input-component';
 import ButtonComponent from './button-component';
+import service from '../../services';
+
+const objService = new service();
 
 const DataFilter = () => {
     const now = new Date();
     const year = now.getFullYear();
     const month = ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1));
     const YM = year + "-" + month;
-
-    const text = {
-        defaultYM: 'Mes parcial'
-    }
+    const text = { defaultYM: 'Mes parcial' }
 
     const [dateYM, setDateYM] = useState({ value: '', valid: null });
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [textSmallYM, setTextSmallYM] = useState(text.defaultYM);
 
+    const resetStates = () => {
+        setDateYM({ value: '', valid: null });
+        setStartDate('');
+        setEndDate('');
+        setTextSmallYM(text.defaultYM);
+    }
+
+    const filter = (start_date, end_date) => {
+        objService.get_filtered_data(start_date, end_date).then((response) => {
+            console.log(response);
+            resetStates();
+        }).catch(function (error) {
+            if (error.response) {
+                // Request made and server responded
+                console.log("Data: " + error.response.data);
+                console.log("Status: " + error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+            }
+        });
+    }
+
     const toSubmit = (e) => {
         e.preventDefault();
         if (dateYM.valid) {
             let cStartDate = firstSecondDate(startDate);
             let cEndDate = lastSecondDate(endDate);
-            alert("Datos que se enviaran a la API (Rango de fechas para el filtro de datos): " +
-                "\n1.- " + cStartDate + " (start_date)\n2.- " + cEndDate + " (end_date)");
-            //TODO enviar datos a API ("Instalar axios para la coneccion")
-            setDateYM({ value: '', valid: null });
-            setStartDate('');
-            setEndDate('');
-            setTextSmallYM(text.defaultYM);
+            filter(cStartDate, cEndDate);
         }
         else {
             alert("Es necesario corrijas todos los datos de los campos, antes de realizar el envio de datos.");
@@ -38,7 +59,7 @@ const DataFilter = () => {
 
     const lastSecondDate = (date) => {
         let convertedDate = new Date(date);
-        convertedDate = new Date(convertedDate.getTime() + 24*60*60*1000 - 1);
+        convertedDate = new Date(convertedDate.getTime() + 24 * 60 * 60 * 1000 - 1);
         convertedDate = convertedDate.toISOString().split('.')[0];
         return convertedDate;
     }

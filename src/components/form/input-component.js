@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InputComponent = ({ value, changeValue, valid, toValidate, divCN, labelCN, labelText, inputID, inputType, required, maxDate, smallID, smallText}) => {
+const InputComponent = ({ value, changeValue, valid, divCN, labelCN, labelText, inputID, inputType, required, maxDate, smallID, smallText}) => {
     const inputClassName = {
         form: "form-control",
         formValid: "form-control is-valid",
@@ -19,11 +19,6 @@ const InputComponent = ({ value, changeValue, valid, toValidate, divCN, labelCN,
             return {...prevState, value: inputValue }
         });
     }
-
-    // useEffect(() => { 
-    //     toValidate(); 
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [value]);
 
     return (
         <div className={divCN}>
