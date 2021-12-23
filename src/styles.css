@@ -6,11 +6,7 @@ body {
   border: 1px solid black;
 }
 
-@media (min-width: 479px) {
-  .max-width-input {
-    max-width: 250px;
-  }
-}
+
 
 #load-container {
   background-color: rgba(250, 240, 245, 0.9);

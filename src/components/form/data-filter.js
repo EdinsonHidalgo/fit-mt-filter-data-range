@@ -4,6 +4,7 @@ import InputComponent from './input-component';
 import Service from '../../services';
 import Utilities from '../../utilities';
 import ButtonComponent from '../form/button-component'
+import './css/styles.css';
 
 const objService = new Service();
 const objUtilities = new Utilities();
@@ -130,7 +131,7 @@ const DataFilter = () => {
                     </div>
 
                     <div className='form-group col-auto d-flex align-items-center'>
-                        <ButtonComponent divCN="mt-2" btnCN="btn btn-danger px-4" type="submit" btnText="Descargar"></ButtonComponent>
+                        <ButtonComponent divCN="line-input" btnCN="btn btn-danger px-4" type="submit" btnText="Descargar"></ButtonComponent>
                     </div>
                 </form>
             </div>
