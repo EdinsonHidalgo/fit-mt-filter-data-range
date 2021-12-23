@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import InputComponent from './input-component';
 import ButtonComponent from './button-component';
-import service from '../../services';
+import Service from '../../services';
+import Utilities from '../../utilities';
 
-const objService = new service();
+const objService = new Service();
+const objUtilities = new Utilities();
 
-const DataFilter = () => {
+const DataFilter = ({toStartDate, toEndDate}) => {
     const now = new Date();
     const year = now.getFullYear();
     const month = ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1));
@@ -18,48 +20,24 @@ const DataFilter = () => {
     const [endDate, setEndDate] = useState('');
     const [textSmallYM, setTextSmallYM] = useState(text.defaultYM);
 
-    const resetStates = () => {
-        setDateYM({ value: '', valid: null });
-        setStartDate('');
-        setEndDate('');
-        setTextSmallYM(text.defaultYM);
-    }
-
-    const loadControl = (v, o) => {
-        var contenedor = document.getElementById('load-container');
-        console.log(contenedor);
-        contenedor.style.visibility = v;
-        contenedor.style.opacity = o;
-    }
-
     const filter = (start_date, end_date) => {
-        loadControl('visible', '100%');
+        objUtilities.loadControl('visible', '100%');
         objService.get_filtered_data(start_date, end_date).then((response) => {
-            loadControl('hidden', '0');
+            objUtilities.loadControl('hidden', '0');
             console.log(response);
-            resetStates();
         }).catch(function (error) {
-            loadControl('hidden', '0');
-            if (error.response) {
-                // Request made and server responded
-                console.log("Data: " + error.response.data);
-                console.log("Status: " + error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
+            objUtilities.loadControl('hidden', '0');
+            objUtilities.toError(error);
         });
     }
 
     const toSubmit = (e) => {
         e.preventDefault();
         if (dateYM.valid) {
-            let cStartDate = firstSecondDate(startDate);
-            let cEndDate = lastSecondDate(endDate);
+            let cStartDate = DateRefFirstSecond(startDate);
+            let cEndDate = DateRefLastSecond(endDate);
+            toStartDate(cStartDate);
+            toEndDate(cEndDate);
             filter(cStartDate, cEndDate);
         }
         else {
@@ -67,14 +45,14 @@ const DataFilter = () => {
         }
     }
 
-    const lastSecondDate = (date) => {
+    const DateRefLastSecond = (date) => {
         let convertedDate = new Date(date);
         convertedDate = new Date(convertedDate.getTime() + 24 * 60 * 60 * 1000 - 1);
         convertedDate = convertedDate.toISOString().split('.')[0];
         return convertedDate;
     }
 
-    const firstSecondDate = (date) => {
+    const DateRefFirstSecond = (date) => {
         let convertedDate = new Date(date).toISOString().split('.')[0];
         return convertedDate;
     }
