@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import InputComponent from './input-component';
 import Service from '../../services';
-import Utilities from '../../utilities';
+import Utilities from '../../utilities/Useful';
 import ButtonComponent from '../form/button-component'
 import './css/styles.css';
 
@@ -10,10 +10,7 @@ const objService = new Service();
 const objUtilities = new Utilities();
 
 const DataFilter = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1));
-    const YM = year + "-" + month;
+    const YM = objUtilities.get_current_year() + "-" + objUtilities.get_current_month();
     const text = { defaultYM: 'Mes parcial' }
 
     const [dateYM, setDateYM] = useState({ value: '', valid: null });
@@ -49,7 +46,7 @@ const DataFilter = () => {
             let v = null;
             setStartDate('');
             setEndDate('');
-            if (dateYM.value !== '') {
+            if (dateYM.value !== '' && objUtilities.yearValidator(dateYM.value.split('-')[0])) {
                 v = true;
                 setStartDate(dateYM.value + "-01");
             }
@@ -69,7 +66,9 @@ const DataFilter = () => {
         }
         if (startDate !== '') {
             let lastDay = '';
-            if (parseInt(getYear()) === parseInt(year) && parseInt(getMonth()) === parseInt(month)) {
+            if (parseInt(getYear()) === parseInt(objUtilities.get_current_year()) && 
+                parseInt(getMonth()) === parseInt(objUtilities.get_current_month())) 
+            {
                 let day = new Date().getDate();
                 lastDay = (day < 10 ? '0' + day : day);
             }
@@ -79,7 +78,7 @@ const DataFilter = () => {
             let lEndDate = getYear() + "-" + getMonth() + "-" + lastDay;
             setEndDate(lEndDate);
         }
-    }, [startDate, year, month]);
+    }, [startDate]);
 
     useEffect(() => {
         switch (dateYM.valid) {
@@ -101,20 +100,9 @@ const DataFilter = () => {
         }
     }, [dateYM.valid, startDate, endDate]);
 
-    const downloadData = () => {
-        objUtilities.loadControl('visible', '100%');
-        objService.get_download_data(startDate, endDate).then((response) => {
-            objUtilities.loadControl('hidden', '0');
-            console.log(response);
-        }).catch(function (error) {
-            objUtilities.loadControl('hidden', '0');
-            objUtilities.toError(error);
-        });
-    }
-
     const onSubmit = (e) => {
         e.preventDefault();
-        if (startDate !== '' && endDate !== '') { downloadData(); }
+        if (startDate !== '' && endDate !== '') { filter(); }
         //else { alert("Es necesario que selecciones un Mes/Año, antes de realizar la descarga de datos."); }
     }
 
@@ -126,7 +114,7 @@ const DataFilter = () => {
                         <InputComponent divCN="max-width-input"
                             labelCN="form-label" labelText="Mes/Año" inputID="start-date" inputType="month" required={true}
                             value={dateYM.value} changeValue={setDateYM} smallID="desc-start-date" smallText={textSmallYM}
-                            maxDate={YM} valid={dateYM.valid}>
+                            maxDate={YM} minDate={'1900-01'} valid={dateYM.valid}>
                         </InputComponent>
                     </div>
 

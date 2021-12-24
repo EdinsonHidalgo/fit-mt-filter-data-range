@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InputComponent = ({ value, changeValue, valid, divCN, labelCN, labelText, inputID, inputType, required, maxDate, smallID, smallText}) => {
+const InputComponent = ({ value, changeValue, valid, divCN, labelCN, labelText, inputID, inputType, required, minDate, maxDate, smallID, smallText}) => {
     const inputClassName = {
         form: "form-control",
         formValid: "form-control is-valid",
@@ -23,9 +23,9 @@ const InputComponent = ({ value, changeValue, valid, divCN, labelCN, labelText, 
     return (
         <div className={divCN}>
             <label className={labelCN} htmlFor={inputID}><b>{labelText}</b></label>
-            <input type={inputType} id={inputID} aria-describedby={smallID}
+            <input type={inputType} id={inputID} aria-describedby={smallID} max={maxDate} min={minDate}
                 className={valid === null ? inputClassName.form : valid ? inputClassName.formValid : inputClassName.formInvalid}
-                required={required} value={value} onChange={onChange} max={maxDate} />
+                required={required} value={value} onChange={onChange} />
             <small className={valid === null ? smallClassName.form : valid ? smallClassName.formValid : smallClassName.formInvalid}
                 id={smallID}> {smallText} </small>
         </div>
