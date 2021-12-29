@@ -1,6 +1,6 @@
 import React from 'react'
-import Title from '../form/title'
-import DataFilter from './components/data-filter'
+import Title from '../componentes/Title'
+import DataFilter from '../componentes/Data-filter'
 
 const HomeView = () => {
   return (
