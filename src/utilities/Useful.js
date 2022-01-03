@@ -1,11 +1,8 @@
 export default class Utilities {
-
-    loadControl = (v, o) => {
-        var contenedor = document.getElementById('load-container');
-        contenedor.style.visibility = v;
-        contenedor.style.opacity = o;
-    }
-
+    /**
+     * Este metodo permite mostrar en consola, las posible propiedades que se manejan dentro de un error.
+     * @param {error} err Error que retorna durante una solicitud de metodos HTTP.
+     */
     toError = (err) => {
         if (err.response) {
             // Request made and server responded
@@ -20,19 +17,29 @@ export default class Utilities {
             console.log('Error', err.message);
         }
     }
-
+    /**
+     * Este metodo permite generar el año actual.
+     * @returns {String} Retorna el año actual.
+     */
     get_current_year() {
         const now = new Date();
         const year = now.getFullYear();
         return year;
     }
-
+    /**
+     * Este metodo permite generar el mes actual.
+     * @returns {String} Retorna el mes actual.
+     */
     get_current_month() {
         const now = new Date();
         const month = ((now.getMonth() + 1) < 10 ? '0' + (now.getMonth() + 1) : (now.getMonth() + 1));
         return month;
     }
-
+    /**
+     * Este metodo permite validar que el año no sea menor a 1900, ni mayor al año actual.
+     * @param {String} year Año que se desea validar.
+     * @returns {Boolean} Retorna una bandera que representa la validacion del año.
+     */
     yearValidator(year){
         let r = false;
         if(parseInt(year) >= 1900 && parseInt(year) <= parseInt(this.get_current_year())) {
