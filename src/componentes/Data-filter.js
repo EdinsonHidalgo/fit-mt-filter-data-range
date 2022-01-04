@@ -57,12 +57,12 @@ const DataFilter = () => {
         const url = "http://10.110.42.29:8000/trafic/?start_date=" + sd + "&end_date=" + ed;
         try {
             const response = await fetch(url)
-            setLoading(false);
             // .then(response => response.json())
             // .then(data => console.log(data));
             // if (response.status === 200) {
             //     console.log("Respuesta correcta");
             // }
+            setLoading(false);
         } catch (err) {
             setLoading(false);
             objUtilities.toError(err);
