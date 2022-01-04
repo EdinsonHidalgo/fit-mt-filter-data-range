@@ -41,22 +41,31 @@ const DataFilter = () => {
      */
     const [textSmallYM, setTextSmallYM] = useState(text.defaultYM);
     /**
+     * Esta constante almacena el estado que permite controlar el mensaje de "Cargando...".
+     */
+    const [loading, setLoading] = useState(null);
+    /**
      * Este metodo permite realizar una consulta 'GET' (por defecto) a la API. 
      * @param {String} start_date Fecha de inicio que se enviara como primer parametro en la consulta API
      * @param {String} end_date Fecha final que se enviara como segundo parametro en la consulta API
      * @returns {void}
      */
     const filter = async (start_date, end_date) => {
-        const url = "http://10.110.42.29:8000/trafic/?start_date=" + start_date + "&end_date=" + end_date;
+        setLoading(true);
+        const sd = "2021-11-30T16:00:00";
+        const ed = "2021-11-30T16:10:00";
+        const url = "http://10.110.42.29:8000/trafic/?start_date=" + sd + "&end_date=" + ed;
         try {
             const response = await fetch(url)
-                .then(response => response.json())
-                .then(data => console.log(data));
-            if (response.status === 200) {
-                console.log("Respuesta correcta");
-            }
+            setLoading(false);
+            // .then(response => response.json())
+            // .then(data => console.log(data));
+            // if (response.status === 200) {
+            //     console.log("Respuesta correcta");
+            // }
         } catch (err) {
-            return "Ocurrio un error: " + err;
+            setLoading(false);
+            objUtilities.toError(err);
         }
     }
     /**
@@ -184,6 +193,7 @@ const DataFilter = () => {
                     </ButtonComponent>
                 </div>
             </form>
+            {loading ? <h2 className='text-center mb-4'>Cargando...</h2> : null}
         </div>
     )
 }
