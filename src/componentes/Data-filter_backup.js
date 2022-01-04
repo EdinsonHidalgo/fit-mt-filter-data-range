@@ -16,9 +16,7 @@ const DataFilter = () => {
     /**
      * Esta constante almacena el dato del año y mes actual.
      */
-    const now = new Date();
-    const time = now.toLocaleTimeString();
-    const YM = objUtilities.get_current_year() + "-" + objUtilities.get_current_month() + "-0" + now.getDate() + "T" + time;
+    const YM = objUtilities.get_current_year() + "-" + objUtilities.get_current_month();
     /**
      * Esta constante almacena los distintos textos que se mostraran debajo del campo de 'Mes/Año'.
      */
@@ -118,15 +116,13 @@ const DataFilter = () => {
             let v = null;
             setStartDate('');
             setEndDate('');
-            console.log("Lo que se guardo en dateYM: " + dateYM.value);
-            console.log("Lo que se guardo en YM: " + YM);
-            // if (dateYM.value !== '' && objUtilities.yearValidator(dateYM.value.split('-')[0])) {
-            //     v = true;
-            //     setStartDate(dateYM.value + "-01");
-            // }
-            // setDateYM((prevState) => {
-            //     return { ...prevState, valid: v }
-            // });
+            if (dateYM.value !== '' && objUtilities.yearValidator(dateYM.value.split('-')[0])) {
+                v = true;
+                setStartDate(dateYM.value + "-01");
+            }
+            setDateYM((prevState) => {
+                return { ...prevState, valid: v }
+            });
         }
         toValidDate();
     }, [dateYM.value]);
@@ -186,9 +182,9 @@ const DataFilter = () => {
             <form className='m-3 row d-flex justify-content-center' onSubmit={onSubmit}>
                 <div className='form-group col-auto'>
                     <InputComponent divCN="max-width-input"
-                        labelCN="form-label" labelText="Mes/Año" inputID="start-date" inputType="datetime-local" required={true}
+                        labelCN="form-label" labelText="Mes/Año" inputID="start-date" inputType="month" required={true}
                         value={dateYM.value} changeValue={setDateYM} smallID="desc-start-date" smallText={textSmallYM}
-                        maxDate={YM} minDate={'2019-01-01T00:00'} valid={dateYM.valid}>
+                        maxDate={YM} minDate={'1900-01'} valid={dateYM.valid}>
                     </InputComponent>
                 </div>
 
