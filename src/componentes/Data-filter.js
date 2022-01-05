@@ -41,23 +41,21 @@ const DataFilter = () => {
      */
     const [textSmallYM, setTextSmallYM] = useState(text.defaultYM);
     /**
-     * Este metodo permite realizar una consulta 'GET' (por defecto) a la API. 
+     * Este metodo permite navegar al URL, realizando una consulta 'GET' (por defecto) a la API. 
      * @param {String} start_date Fecha de inicio que se enviara como primer parametro en la consulta API
      * @param {String} end_date Fecha final que se enviara como segundo parametro en la consulta API
      * @returns {void}
      */
     const filter = async (start_date, end_date) => {
         const url = "http://10.110.42.29:8000/trafic/?start_date=" + start_date + "&end_date=" + end_date;
-        try {
-            const response = await fetch(url)
-                .then(response => response.json())
-                .then(data => console.log(data));
-            if (response.status === 200) {
-                console.log("Respuesta correcta");
-            }
-        } catch (err) {
-            return "Ocurrio un error: " + err;
-        }
+        console.log(url);
+        window.location.assign(url);
+        // try {
+            
+        //     window.location.assign(url);
+        // } catch (err) {
+        //     return "Ocurrio un error: " + err;
+        // }
     }
     /**
      * Este metodo permite ajustar el formato de una fecha.
@@ -91,7 +89,7 @@ const DataFilter = () => {
             let cEndDate = DateRefLastSecond(endDate);
             filter(cStartDate, cEndDate);
         }
-        else { alert("Es necesario que selecciones un Mes/Año valido, antes de realizar la descarga de datos."); }
+        else { alert("Es necesario que selecciones un Mes/Año valido, antes de realizar la descarga de datos. (YYYY-MM)"); }
     }
     /**
      * Este hook se ejecutara cada vez que el componente se renderice, por el cambio en la clave 'value', del estado 
@@ -106,7 +104,7 @@ const DataFilter = () => {
             let v = null;
             setStartDate('');
             setEndDate('');
-            if (dateYM.value !== '' && objUtilities.yearValidator(dateYM.value.split('-')[0])) {
+            if (dateYM.value !== '' && objUtilities.dateValidator(dateYM.value)) {
                 v = true;
                 setStartDate(dateYM.value + "-01");
             }
@@ -174,7 +172,7 @@ const DataFilter = () => {
                     <InputComponent divCN="max-width-input"
                         labelCN="form-label" labelText="Mes/Año" inputID="start-date" inputType="month" required={true}
                         value={dateYM.value} changeValue={setDateYM} smallID="desc-start-date" smallText={textSmallYM}
-                        maxDate={YM} minDate={'1900-01'} valid={dateYM.valid}>
+                        maxDate={YM} minDate={'1900-01'} valid={dateYM.valid} placeholder={'YYYY-MM'}>
                     </InputComponent>
                 </div>
 

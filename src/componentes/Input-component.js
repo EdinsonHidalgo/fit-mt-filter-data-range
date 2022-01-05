@@ -5,7 +5,7 @@ import React from 'react'
  * seccion del campo.
  * @returns {html} Fragmento de codigo Html que representa al componente.
  */
-const InputComponent = ({ value, changeValue, valid, divCN, labelCN, labelText, inputID, inputType, required, minDate, maxDate, smallID, smallText}) => {
+const InputComponent = ({ value, changeValue, valid, divCN, labelCN, labelText, inputID, inputType, required, minDate, maxDate, smallID, smallText, placeholder}) => {
     /**
      * Esta constante almacena las posibles opciones que permiten dar un control dinamico de la propiedad 'className' del 
      * elemento 'input'.
@@ -39,7 +39,7 @@ const InputComponent = ({ value, changeValue, valid, divCN, labelCN, labelText, 
             <label className={labelCN} htmlFor={inputID}><b>{labelText}</b></label>
             <input type={inputType} id={inputID} aria-describedby={smallID} max={maxDate} min={minDate}
                 className={valid === null ? inputClassName.form : valid ? inputClassName.formValid : inputClassName.formInvalid}
-                required={required} value={value} onChange={onChange} />
+                required={required} value={value} onChange={onChange} placeholder={placeholder} />
             <small className={valid === null ? smallClassName.form : valid ? smallClassName.formValid : smallClassName.formInvalid}
                 id={smallID}> {smallText} </small>
         </div>

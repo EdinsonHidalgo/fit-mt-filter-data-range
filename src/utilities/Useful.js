@@ -40,10 +40,37 @@ export default class Utilities {
      * @param {String} year Año que se desea validar.
      * @returns {Boolean} Retorna una bandera que representa la validacion del año.
      */
-    yearValidator(year){
+    yearValidator(year) {
         let r = false;
-        if(parseInt(year) >= 1900 && parseInt(year) <= parseInt(this.get_current_year())) {
+        if (parseInt(year) >= 1900 && parseInt(year) <= parseInt(this.get_current_year())) {
             r = true;
+        }
+        return r;
+    }
+    /**
+     * Este metodo permite validar que el mes se encuentre en un formato correcto.
+     * @param {String} month Mes que se desea validar.
+     * @returns {Boolean} Retorna una bandera que representa la validacion del mes.
+     */
+     monthValidator(month) {
+        let r = false;
+        if (month.length === 2 && parseInt(month) >= 1 && parseInt(month) <= 12) {
+            r = true;
+        }
+        return r;
+    }
+    /**
+     * Este metodo permite validar que el formato de fecha.
+     * @param {String} date Fecha que se desea validar.
+     * @returns {Boolean} Retorna una bandera que representa la validacion del campo.
+     */
+    dateValidator(date) {
+        let r = false;
+        let cadena = date.split('-');
+        if (cadena.length === 2) {
+            if(this.yearValidator(cadena[0]) && this.monthValidator(cadena[1])) {
+                r = true;
+            }
         }
         return r;
     }
