@@ -41,21 +41,23 @@ const DataFilter = () => {
      */
     const [textSmallYM, setTextSmallYM] = useState(text.defaultYM);
     /**
+     * Esta constante almacena el estado de validacion para 'mes parcial'.
+     */
+     const [mesParcial, setMesParcial] = useState(false);
+    /**
      * Este metodo permite navegar al URL, realizando una consulta 'GET' (por defecto) a la API. 
      * @param {String} start_date Fecha de inicio que se enviara como primer parametro en la consulta API
      * @param {String} end_date Fecha final que se enviara como segundo parametro en la consulta API
      * @returns {void}
      */
     const filter = async (start_date, end_date) => {
-        const url = "http://10.110.42.29:8000/trafic/?start_date=" + start_date + "&end_date=" + end_date;
+        const url = "https://10.110.42.31:8000/trafic/?start_date=" + start_date + "&end_date=" + end_date;
         console.log(url);
-        window.location.assign(url);
-        // try {
-            
-        //     window.location.assign(url);
-        // } catch (err) {
-        //     return "Ocurrio un error: " + err;
-        // }
+        try { 
+            //window.location.assign(url); 
+        } catch (err) {
+            objUtilities.toError(err);
+        }
     }
     /**
      * Este metodo permite ajustar el formato de una fecha.
@@ -63,9 +65,15 @@ const DataFilter = () => {
      * @returns {String} Retorna la fecha del ultimo dia, a la ultima hora, en formato 'YYYY-MM-DDTHH:MM:SS'.
      */
     const DateRefLastSecond = (date) => {
-        let convertedDate = new Date(date);
-        convertedDate = new Date(convertedDate.getTime() + 24 * 60 * 60 * 1000 - 1);
-        convertedDate = convertedDate.toISOString().split('.')[0];
+        let convertedDate = '';
+        if(mesParcial) {
+            convertedDate = date + 'T' + new Date().toLocaleTimeString();
+        }
+        else {
+            convertedDate = new Date(date);
+            convertedDate = new Date(convertedDate.getTime() + 24 * 60 * 60 * 1000 - 1);
+            convertedDate = convertedDate.toISOString().split('.')[0];
+        }
         return convertedDate;
     }
     /**
@@ -141,6 +149,7 @@ const DataFilter = () => {
                 parseInt(getMonth()) === parseInt(objUtilities.get_current_month())) {
                 let day = new Date().getDate();
                 lastDay = (day < 10 ? '0' + day : day);
+                setMesParcial(true);
             }
             else {
                 lastDay = new Date(getYear(), getMonth(), 0).getDate();
